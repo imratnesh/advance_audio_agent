@@ -1,0 +1,41 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE and editor folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and temporary files
+logs/
+temp_audio/
+generated_audio/ # Directory for generated audio responses
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Pip files
+*.egg-info/
+.pip-modules/
+
+# Jupyter Notebook files (if you ever use them)
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.*

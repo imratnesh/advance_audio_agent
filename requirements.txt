@@ -1,0 +1,18 @@
+fastapi
+uvicorn
+python-multipart
+streamlit
+requests
+httpx
+pytest
+pytest-asyncio
+loguru
+
+# LangChain and Ollama
+langchain
+langchain-community
+langchain-ollama
+langgraph
+
+# Offline Speech-to-Text
+vosk

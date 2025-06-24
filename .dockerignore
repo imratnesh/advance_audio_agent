@@ -1,0 +1,25 @@
+# Virtual environment
+.venv
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE and editor folders
+.vscode/
+.idea/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs and temporary files
+logs/
+temp_audio/
+
+# OS-specific files
+.DS_Store
