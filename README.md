@@ -2,6 +2,12 @@
 
 This project provides a complete solution for processing audio files through a conversational AI agent. It features a FastAPI backend for processing, a Streamlit frontend for user interaction, and uses a locally-run Ollama model to ensure privacy and avoid paid APIs.
 
+# Advanced Audio Agent
+
+![Screenshot](tests/img.png)
+
+[YouTube]([https://youtube.com/your-channel](https://www.youtube.com/@IndiaAnalytica)) | [LinkedIn]([https://linkedin.com/in/your-profile](https://www.linkedin.com/in/ratneshkushwaha/))
+
 ## Features
 
 - **FastAPI Backend**: A robust API to handle audio file uploads.
@@ -11,10 +17,6 @@ This project provides a complete solution for processing audio files through a c
 - **Observability**: Structured logging with `loguru` for monitoring and debugging.
 - **Asynchronous**: Built with `asyncio` and `FastAPI` for efficient handling of requests.
 - **Comprehensive Testing**: Includes unit tests for core logic and integration tests for the API.
-
-## Project Structure
-
-## Setup and Installation
 
 ### Prerequisites
 
