@@ -1,9 +1,7 @@
 import os
 import shutil
-import sys  # Import sys for stderr
-from typing import Optional
-
-from fastapi import FastAPI, UploadFile, File, HTTPException, Header
+import sys
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 from loguru import logger
 
@@ -18,14 +16,9 @@ app = FastAPI(
 )
 
 # --- Logging Configuration ---
-# Remove default loguru handler to prevent duplicate console output
-# if we explicitly add sys.stderr later.
 logger.remove()
-# Add a sink for file logging (logs/api.log inside the container)
 logger.add("logs/api.log", rotation="10 MB", retention="10 days", level="INFO")
-# Add a sink for console/stderr logging, which Docker captures
 logger.add(sys.stderr, level="INFO")
-
 
 # --- Temporary File Directory ---
 TEMP_DIR = "temp_audio"
@@ -33,16 +26,11 @@ os.makedirs(TEMP_DIR, exist_ok=True)
 
 
 @app.post("/process-audio/")
-async def process_audio_endpoint(
-    file: UploadFile = File(...),
-    x_session_id: Optional[str] = Header(None, alias="X-Session-ID")
-):
+async def process_audio_endpoint(file: UploadFile = File(...)):
     """
-    Accepts a .wav audio file, transcribes it, and gets a conversational response.
-
-    Uses the 'X-Session-ID' header to maintain conversation memory. If the header
-    is not provided, a new conversation session is started.
+    Accepts a .wav audio file, transcribes it, and gets a single conversational response.
     """
+    logger.info("Received request for /process-audio/ endpoint.")
     if not file.filename.endswith('.wav'):
         logger.warning(f"Invalid file format uploaded: {file.filename}")
         raise HTTPException(status_code=400, detail="Invalid file format. Please upload a .wav file.")
@@ -50,18 +38,20 @@ async def process_audio_endpoint(
     temp_file_path = os.path.join(TEMP_DIR, file.filename)
 
     try:
-        # Save the uploaded file temporarily
         with open(temp_file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         logger.info(f"Temporarily saved uploaded file to {temp_file_path}")
 
-        # 1. Transcribe the audio file
         transcribed_text = transcribe_audio(temp_file_path)
         if "Error:" in transcribed_text:
+            logger.error(f"Transcription failed: {transcribed_text}")
             raise HTTPException(status_code=500, detail=transcribed_text)
+        logger.info(f"Transcription successful for '{file.filename}'.")
 
-        # 2. Get a response from the agent, passing the session_id for memory
+        # Simplified agent call
         agent_response = agent_instance.invoke_llm(transcribed_text)
+        logger.success("Successfully processed audio and generated agent response.")
+
         return JSONResponse(
             content={
                 "transcribed_text": transcribed_text,

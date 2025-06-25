@@ -63,3 +63,32 @@ def transcribe_audio(wav_file_path: str) -> str:
     except Exception as e:
         logger.error(f"An error occurred during transcription: {e}")
         return "Error: An unexpected error occurred during transcription."
+
+# --- New Class for Streaming Transcription ---
+class StreamingTranscriber:
+    """Handles streaming audio transcription for a single session."""
+    def __init__(self, sample_rate: int):
+        if not model:
+            raise ConnectionError("Vosk model not loaded")
+        logger.info(f"Initializing streaming transcriber with sample rate: {sample_rate}")
+        self.recognizer = KaldiRecognizer(model, sample_rate)
+        self.recognizer.SetWords(True)
+
+    def process_chunk(self, chunk: bytes) -> str | None:
+        """
+        Processes an audio chunk. Returns transcribed text if a sentence is complete.
+        """
+        logger.info(f"process_chunk")
+        if self.recognizer.AcceptWaveform(chunk):
+            result = json.loads(self.recognizer.Result())
+            text = result.get('text')
+            if text:
+                logger.info(f"Partial transcript: '{text}'")
+                return text
+        return None
+
+    def get_final_result(self) -> str:
+        """Gets the final transcription result at the end of the stream."""
+        logger.info(f"get_final_result")
+        final_result = json.loads(self.recognizer.FinalResult())
+        return final_result.get('text', '')

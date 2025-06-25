@@ -1,18 +1,27 @@
-fastapi
-uvicorn
+fastapi==0.115.12
+uvicorn==0.34.3
 python-multipart
-streamlit
-requests
-httpx
-pytest
+streamlit==1.46.0
+requests==2.31.0
+httpx==0.28.1
+pytest==8.4.0
 pytest-asyncio
-loguru
+loguru==0.7.3
 
 # LangChain and Ollama
 langchain
 langchain-community
 langchain-ollama
-langgraph
+langgraph==0.4.8
 
 # Offline Speech-to-Text
-vosk
+vosk==0.3.45
+# For WebRTC and real-time frontend
+streamlit-webrtc
+websockets
+numpy==2.3.0
+pydub
+aiortc
+
+langchain-core==0.3.66
+matplotlib==3.10.3
